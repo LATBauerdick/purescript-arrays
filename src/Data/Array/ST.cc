@@ -15,9 +15,6 @@
 #include <limits>
 #include "ST.hh"
 
-define_symbol(value);
-define_symbol(index);
-
 namespace Data_Array_ST {
   using namespace PureScript;
 
@@ -115,12 +112,7 @@ namespace Data_Array_ST {
       const auto n = xs.size();
       any::array as;
       for (int i = 0; i < n; i++) {
-        as.emplace_back(
-          record::make(
-            { symbol(value), xs[i] },
-            { symbol(index), i }
-          )
-        );
+        as.emplace_back(any::record{ { "value", xs[i] }, { "index", i } });
       }
       return as;
     };

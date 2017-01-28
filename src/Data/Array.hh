@@ -46,11 +46,11 @@ namespace Data_Array {
 
   // foreign import cons :: forall a. a -> Array a -> Array a
   //
-  auto cons(const any&, any::array) -> any::array;
+  auto cons(const any&, const any::array&) -> any::array;
 
   // foreign import snoc :: forall a. Array a -> a -> Array a
   //
-  auto snoc(any::array, const any&) -> any::array;
+  auto snoc(const any::array&, const any&) -> any::array;
 
   // foreign import uncons'
   //   :: forall a b
@@ -145,7 +145,7 @@ namespace Data_Array {
 
   // foreign import sortImpl :: forall a. (a -> a -> Int) -> Array a -> Array a
   //
-  auto sortImpl(const any&, any::array) -> any::array;
+  auto sortImpl(const any&, const any::array&) -> any::array;
 
   // foreign import slice :: forall a. Int -> Int -> Array a -> Array a
   //

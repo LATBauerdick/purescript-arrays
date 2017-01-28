@@ -15,9 +15,6 @@
 #include <algorithm>
 #include "Array.hh"
 
-define_symbol(yes);
-define_symbol(no);
-
 namespace Data_Array {
 
   // foreign import fromFoldableImpl
@@ -47,16 +44,18 @@ namespace Data_Array {
 
   // foreign import cons :: forall a. a -> Array a -> Array a
   //
-  auto cons(const any& e, any::array xs) -> any::array {
-    xs.emplace_front(e);
-    return xs;
+  auto cons(const any& e, const any::array& xs) -> any::array {
+    any::array result(xs);
+    result.emplace_front(e);
+    return result;
   }
 
   // foreign import snoc :: forall a. Array a -> a -> Array a
   //
-  auto snoc(any::array xs, const any& e) -> any::array {
-    xs.emplace_back(e);
-    return xs;
+  auto snoc(const any::array& xs, const any& e) -> any::array {
+    any::array result(xs);
+    result.emplace_back(e);
+    return result;
   }
 
   // foreign import uncons'
@@ -145,7 +144,7 @@ namespace Data_Array {
       return nothing;
     }
     any::array xs(l);
-    xs.emplace(xs.begin() + i, a);
+    xs.insert(xs.begin() + i, a);
     return just(xs);
   }
 
@@ -234,23 +233,21 @@ namespace Data_Array {
     for (auto it = xs.cbegin(); it != xs.cend(); ++it) {
       const any& x = *it;
       if (f(x)) {
-        yes.push_back(x);
+        yes.emplace_back(x);
       } else {
-        no.push_back(x);
+        no.emplace_back(x);
       }
     }
-    return record::make(
-      { symbol(yes), yes },
-      { symbol(no) , no  }
-    );
+    return any::record{ { "yes", yes }, { "no", no } };
   }
 
   // foreign import sortImpl :: forall a. (a -> a -> Int) -> Array a -> Array a
   //
-  auto sortImpl(const any& f, any::array xs) -> any::array {
-    std::sort(xs.begin(), xs.end(),
+  auto sortImpl(const any& f, const any::array& xs) -> any::array {
+    any::array result(xs);
+    std::sort(result.begin(), result.end(),
               [f](const any& x, const any& y) { return (f(x)(y)) < 0; });
-    return xs;
+    return result;
   }
 
   // foreign import slice :: forall a. Int -> Int -> Array a -> Array a
