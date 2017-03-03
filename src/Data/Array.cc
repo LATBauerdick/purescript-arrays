@@ -117,9 +117,10 @@ namespace Data_Array {
                           const any& nothing,
                           const any& f,
                           const any::array& xs) -> any {
-    int i = xs.size() - 1;
-    for (auto it = xs.crbegin(), end = xs.crend(); it != end; it++, i--) {
-      if (f(*it)) {
+    const auto size = xs.size();
+    assert(size <= std::numeric_limits<int>::max());
+    for (auto i = static_cast<int>(size) - 1; i >= 0; i--) {
+      if (f(xs[i])) {
         return just(i);
       }
     }
@@ -253,7 +254,9 @@ namespace Data_Array {
   // foreign import slice :: forall a. Int -> Int -> Array a -> Array a
   //
   auto slice(const int start, const int end, const any::array& xs) -> any::array {
-    const int length = xs.size();
+    const auto size = xs.size();
+    assert(size <= std::numeric_limits<decltype(start)>::max());
+    const auto length = static_cast<decltype(start)>(size);
     const auto _start = std::min(start, length);
     const auto _end   = std::min(end, length);
     return any::array(xs.cbegin() + _start, xs.cbegin() + _end);

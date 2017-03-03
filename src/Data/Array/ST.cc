@@ -22,7 +22,7 @@ namespace Data_Array_ST {
   //
   auto copyImpl(const any& xs) -> any {
     return [=]() -> any {
-      return any::array(cast<any::array>(xs));
+      return any::array(static_cast<const any::array&>(xs));
     };
   }
 
@@ -50,7 +50,7 @@ namespace Data_Array_ST {
   //
   auto pokeSTArray(const any& xs_, const int i, const any& a) -> any {
     return [=]() -> any {
-      auto& xs = const_cast<any::array&>(cast<any::array>(xs_));
+      auto& xs = const_cast<any::array&>(static_cast<const any::array&>(xs_));
       const bool ret = i >= 0 && i < xs.size();
       if (ret) {
         xs[i] = a;
@@ -67,7 +67,7 @@ namespace Data_Array_ST {
   //
   auto pushAllSTArray(const any& xs_, const any::array& as) -> any {
     return [=]() -> any {
-      auto& xs = const_cast<any::array&>(cast<any::array>(xs_));
+      auto& xs = const_cast<any::array&>(static_cast<const any::array&>(xs_));
       xs.insert(xs.end(), as.cbegin(), as.cend());
       assert(xs.size() <= std::numeric_limits<int>::max());
       return static_cast<int>(xs.size());
@@ -87,7 +87,7 @@ namespace Data_Array_ST {
                      const int howMany,
                      const any::array& bs) -> any {
     return [=]() -> any {
-      auto& xs = const_cast<any::array&>(cast<any::array>(xs_));
+      auto& xs = const_cast<any::array&>(static_cast<const any::array&>(xs_));
       if (i < 0) {
         throw runtime_error("Negative index not supported yet");
       }

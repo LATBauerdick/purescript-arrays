@@ -41,7 +41,9 @@ namespace Data_Array {
   // foreign import length :: forall a. Array a -> Int
   //
   inline auto length(const any::array& xs) -> int {
-    return xs.size();
+    const auto len = xs.size();
+    assert(len <= std::numeric_limits<int>::max());
+    return static_cast<int>(xs.size());
   }
 
   // foreign import cons :: forall a. a -> Array a -> Array a
