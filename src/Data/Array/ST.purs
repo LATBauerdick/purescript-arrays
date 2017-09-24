@@ -13,6 +13,7 @@ module Data.Array.ST
   , pushAllSTArray
   , spliceSTArray
   , freeze, thaw
+  , unsafeFreeze
   , toAssocArray
   ) where
 
@@ -20,6 +21,7 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST)
 
 import Data.Maybe (Maybe(..))
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | A reference to a mutable array.
 -- |
@@ -52,6 +54,11 @@ thaw = copyImpl
 -- | Create an immutable copy of a mutable array.
 freeze :: forall a h r. STArray h a -> Eff (st :: ST h | r) (Array a)
 freeze = copyImpl
+
+-- | O(1). Convert a mutable array to an immutable array, without copying. The mutable
+-- | array must not be mutated afterwards.
+unsafeFreeze :: forall a r h. STArray h a -> Eff (st :: ST h | r) (Array a)
+unsafeFreeze = pure <<< (unsafeCoerce :: STArray h a -> Array a)
 
 foreign import copyImpl :: forall a b h r. a -> Eff (st :: ST h | r) b
 
