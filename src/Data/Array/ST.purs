@@ -17,7 +17,7 @@ module Data.Array.ST
   , toAssocArray
   ) where
 
-import Prelude (<<<)
+import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST)
 
