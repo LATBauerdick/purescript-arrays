@@ -14,6 +14,7 @@
 //
 #include <limits>
 #include "ST.hh"
+#include <iostream>
 
 namespace Data_Array_ST {
   using namespace PureScript;
