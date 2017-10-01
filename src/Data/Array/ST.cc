@@ -52,6 +52,7 @@ namespace Data_Array_ST {
     return [=]() -> any {
       auto& xs = const_cast<any::array&>(static_cast<const any::array&>(xs_));
       const bool ret = i >= 0 && i < xs.size();
+      std::cout << 'X' << xs.size();std::cout << '\n';
       if (ret) {
         xs[i] = a;
       }
